@@ -34,10 +34,10 @@ class MovieRepository(private var apiService: APIService) {
         }
     }
 
-    fun insertDetails(context: Context, id: String,title: String, year: String,type:String,poster:String,rating: String) {
+    fun insertDetails(context: Context, id: String,title: String, year: String,type:String,poster:String,rating: String,duration:String) {
         movieDatabase = initializeDB(context)
         CoroutineScope(IO).launch {
-            val movieDetails = MovieDetailsTableModel(id,title, year,type,poster,rating)
+            val movieDetails = MovieDetailsTableModel(id,title, year,type,poster,rating,duration)
             movieDatabase!!.loginDao().insertDetails(movieDetails)
         }
     }

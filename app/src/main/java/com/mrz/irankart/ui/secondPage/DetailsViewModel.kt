@@ -9,6 +9,7 @@ import com.mrz.irankart.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.time.Duration
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,8 +30,8 @@ class DetailsViewModel @Inject constructor(var movieRepository: MovieRepository)
         return result
     }
 
-    fun insertDetails(context: Context,id: String, title: String, year: String, genre: String,poster:String,rating: String) {
-        movieRepository.insertDetails(context,id, title, year,genre,poster,rating)
+    fun insertDetails(context: Context,id: String, title: String, year: String, genre: String,poster:String,rating: String,duration: String) {
+        movieRepository.insertDetails(context,id, title, year,genre,poster,rating,duration)
 
     }
 

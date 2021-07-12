@@ -27,7 +27,10 @@ class MovieDetailsTableModel(
     var poster :String,
 
     @ColumnInfo(name="rating")
-    var rating :String
+    var rating :String  ,
+
+    @ColumnInfo(name="duration")
+    var duration :String
 
 ) {
 

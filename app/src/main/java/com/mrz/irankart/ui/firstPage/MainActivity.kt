@@ -1,27 +1,24 @@
 package com.mrz.irankart.ui.firstPage
 
-import android.R.attr
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.mrz.irankart.BaseActivity
 import com.mrz.irankart.R
 import com.mrz.irankart.databinding.ActivityMainBinding
-import com.mrz.irankart.model.MovieTableModel
 import com.mrz.irankart.model.Search
 import com.mrz.irankart.ui.secondPage.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.http.Url
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -87,7 +84,10 @@ class MainActivity : BaseActivity() , RecyclerAdapter.ClickListener {
                     adapter = RecyclerAdapter(it,this@MainActivity)
                 }
                 for(i in it) {
-                    DownloadImagesTask().execute(i)
+//                    DownloadImagesTask().execute(i)
+                    getBitmapFromUrl(i)
+
+
                 }
             }
             else
@@ -113,6 +113,26 @@ class MainActivity : BaseActivity() , RecyclerAdapter.ClickListener {
         val intent= Intent(this,DetailActivity::class.java)
         intent.putExtra("imdbId",id)
         startActivity(intent)
+    }
+
+
+    private fun getBitmapFromUrl(search: Search) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val bitmap = getBitmap(search.poster!!)
+
+
+
+            withContext(Dispatchers.Main) {
+//                testImageView.setImageBitmap(bitmap)
+                myBase64Image = viewModel.encodeToBase64(bitmap!!, Bitmap.CompressFormat.JPEG, 100)
+                viewModel.insertData(this@MainActivity,search.imdbID!!,search.title!!,search.year!!,search.type!!,myBase64Image)
+            }
+        }
+    }
+
+    private fun getBitmap(urll:String): Bitmap? {
+        val url = URL(urll)
+        return BitmapFactory.decodeStream(url.openConnection().getInputStream())
     }
 
 

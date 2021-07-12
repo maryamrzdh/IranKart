@@ -35,7 +35,7 @@ class DetailActivity : BaseActivity() {
                     if (it!=null){
                         var movieDetail=MovieDetails()
                         movieDetail.title=it.Title
-
+                        movieDetail.runtime=it.duration
                         binding.movie=movieDetail
                     }
 
@@ -54,7 +54,7 @@ class DetailActivity : BaseActivity() {
                 Picasso.get().load(it.poster).into(binding.imageView)
                 var rate= it.ratings!![0]
                 binding.rating.text=rate.value
-                viewModel.insertDetails(this,it.imdbID!!, it.title!!, it.year!!,it.genre!!,it.poster!!,rate.value!!)
+                viewModel.insertDetails(this,it.imdbID!!, it.title!!, it.year!!,it.genre!!,it.poster!!,rate.value!!,it.runtime!!)
             }
             else
                 Toast.makeText(this,"error Loading from server!", Toast.LENGTH_SHORT).show()
